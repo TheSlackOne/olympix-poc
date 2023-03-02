@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { DbManager } from "../db/db-manager";
 import { IVulnerability } from "./interfaces";
 
+let db = new DbManager("/home/harry/workspace/olympix/db/reports.db");
+
 export const processBugList = async (bugList: Array<any>) => {
     let vulnerabilityList = new Array<IVulnerability>;
     bugList.forEach(bug => {
@@ -14,13 +16,10 @@ export const processBugList = async (bugList: Array<any>) => {
         };
         vulnerabilityList.push(vulnerability);
     });
-    if (vulnerabilityList.length)
-        console.log(vulnerabilityList);
-    console.log("Connecting to DB");
-    let db = new DbManager("/home/harry/workspace/olympix/db/reports.db");
-    if (db)
-        console.log("Connected to DB:", db.getDbPath());
-    db.insert(vulnerabilityList);
+    if (vulnerabilityList.length) {
+        console.log("Connecting to DB");
+        db.insert(vulnerabilityList);
+    }
 }
 
 export const processReport = async (req: Request, res: Response) => {

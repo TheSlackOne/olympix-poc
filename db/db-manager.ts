@@ -16,15 +16,17 @@ export class DbManager {
 
     //ToDo: Too coupled. (With more time) Decouple DB layer from vulnerability information.
     public insert = async (vulnerabilityList: Array<IVulnerability>) => {
-        this.dbConn.run(`INSERT INTO vulnerabilities(customerIP, name, fileName, patching, description, quickFix) \
-                        VALUES('192.168.1.10', 'A val Name', 'A filename', 'patching proposal', 'A description', 'A quickFix')`,
-                        [], (err: any) => {
-                            if (err) {
-                                return console.log(err.message);
-                            }
-                            // get the last insert id
-                            //console.log(`A row has been inserted with rowid ${this.lastID}`);
+        vulnerabilityList.forEach(vuln => {
+            // ToDo: Prepare transaction. Do not spam the DB!
+            this.dbConn.run(`INSERT INTO vulnerabilities(customerIP, name, fileName, patching, description, quickFix) \
+                            VALUES('192.168.1.10', '${vuln.name}', '${vuln.fileName}', '${vuln.patching}', '${vuln.description}', '${vuln.quickFix}')`,
+                            [], (err: any) => {
+                                if (err) {
+                                    return console.log(err.message);
+                                }
+                            });
         });
+        console.log("Saved to DB successfully.");
     };
 
     public getDbPath = () => {
