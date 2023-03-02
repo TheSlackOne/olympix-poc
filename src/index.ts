@@ -9,11 +9,6 @@ app.use(express.json());
 // Routes.
 app.use(report);
 
-// app.post('/report', function(req, res) {
-//     console.log(req.body);
-//     res.status(200).end();
-// });
-
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
 });
