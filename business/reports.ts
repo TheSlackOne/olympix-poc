@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DbManager } from "../db/db-manager";
-import { IVulnerability, IBugList } from "./interfaces";
+import { IVulnerability } from "./interfaces";
 
 export const processBugList = async (bugList: Array<any>) => {
     let vulnerabilityList = new Array<IVulnerability>;
@@ -17,9 +17,10 @@ export const processBugList = async (bugList: Array<any>) => {
     if (vulnerabilityList.length)
         console.log(vulnerabilityList);
     console.log("Connecting to DB");
-    let db = new DbManager("../db/reports.db");
+    let db = new DbManager("/home/harry/workspace/olympix/db/reports.db");
     if (db)
-        console.log("Connected");
+        console.log("Connected to DB:", db.getDbPath());
+    db.insert(vulnerabilityList);
 }
 
 export const processReport = async (req: Request, res: Response) => {

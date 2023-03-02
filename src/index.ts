@@ -1,6 +1,5 @@
 import express from 'express';
 import report from "../routes/route-reports"
-import sqlite3 from 'sqlite3';
 
 const app = express();
 app.set('port', 8080);
