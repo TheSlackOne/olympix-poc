@@ -1,7 +1,25 @@
 import { Request, Response } from "express";
+import { openDb } from "../db/db-manager";
+import { IVulnerability, IBugList } from "./interfaces";
+
+export const processBugList = async (bugList: Array<any>) => {
+    let vulnerabilityList = new Array<IVulnerability>;
+    bugList.forEach(bug => {
+        let vulnerability: IVulnerability = {
+            name: bug["vuln_name"],
+            fileName: bug["file_name"],
+            patching: bug["patching"],
+            description: bug["description"],
+            quickFix: bug["quick_fix"],
+        };
+        vulnerabilityList.push(vulnerability);
+    });
+    if (vulnerabilityList.length)
+        console.log(vulnerabilityList);
+}
 
 export const processReport = async (req: Request, res: Response) => {
     const jsonRes = JSON.parse(JSON.parse(req.body.res));
-    console.log("jsonRes[bugs-list]:", jsonRes["bugs-list"]);
+    processBugList(jsonRes["bugs-list"]);
     res.status(200).end();
 }
