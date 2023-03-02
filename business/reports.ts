@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { openDb } from "../db/db-manager";
+import { DbManager } from "../db/db-manager";
 import { IVulnerability, IBugList } from "./interfaces";
 
 export const processBugList = async (bugList: Array<any>) => {
@@ -16,6 +16,10 @@ export const processBugList = async (bugList: Array<any>) => {
     });
     if (vulnerabilityList.length)
         console.log(vulnerabilityList);
+    console.log("Connecting to DB");
+    let db = new DbManager("../db/reports.db");
+    if (db)
+        console.log("Connected");
 }
 
 export const processReport = async (req: Request, res: Response) => {
